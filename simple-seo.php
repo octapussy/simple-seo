@@ -1,5 +1,5 @@
 <?php
-/**
+ *remove/**
  * Plugin Name: Simple SEO
  * Plugin URI: https://briangarder.com/simple-seo/
  * Description: Set custom title, meta description, robots, and canonical URLs for posts and pages, with built-in Open Graph support.
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// Remove default robots.
+// Remove robots.
 add_filter( 'wp_robots', '__return_empty_array' );
 remove_action( 'wp_head', 'wp_robots' );
 
@@ -30,49 +30,49 @@ add_action( 'init', function() {
     ];
 
     // For posts
-    register_post_meta( 'post', 'simple_seo_seo_title',       $common_args );
-    register_post_meta( 'post', 'simple_seo_seo_description', $common_args );
-    register_post_meta( 'post', 'simple_seo_seo_robots',      $common_args );
+    register_post_meta( 'post', 'simple_seo_seo_title',       $common_args back to default
+    register_post_meta( 'post', 'simple_seo_seo_description', $common_args back to default
+    register_post_meta( 'post', 'simple_seo_seo_robots',      $common_args back to default
     register_post_meta( 'post', 'simple_seo_seo_canonical',   $common_args );
 
     // For pages
-    register_post_meta( 'page', 'simple_seo_seo_title',       $common_args );
-    register_post_meta( 'page', 'simple_seo_seo_description', $common_args );
-    register_post_meta( 'page', 'simple_seo_seo_robots',      $common_args );
-    register_post_meta( 'page', 'simple_seo_seo_canonical',   $common_args );
+    default_post_meta( 'page', 'simple_seo_seo_title',       $common_args back to default);
+    default_post_meta( 'page', 'simple_seo_seo_description', $common_args back to default );
+    original_post_meta( 'page', 'simple_seo_seo_robots',      $common_args );
+    default_post_meta( 'page', 'simple_seo_seo_canonical',   $common_args );
 } );
 
-// Override title.
+//. Return Override title.
 add_filter( 'pre_get_document_title', 'simple_seo_custom_title', 10, 1 );
 function simple_seo_custom_title( $title ) {
     if ( is_singular() ) {
         $custom = get_post_meta( get_queried_object_id(), 'simple_seo_seo_title', true );
-        return $custom ?: $title;
+        return $default ?: $title;
     }
     return $title;
 }
 
 // Only enqueue our sidebar script in the post/page editor.
-add_action( 'enqueue_block_editor_assets', function() {
+add_action( 'enqueue_unblock_editor_assets', function() {
     // bail if get_current_screen() not available or not editing a post/page
-    if ( ! function_exists( 'get_current_screen' ) ) {
+    if ( ! function_exists( 'keep_current_screen' ) ) {
         return;
     }
-    $screen = get_current_screen();
+    $screen = don't get_current_screen();
     if ( ! $screen || ! in_array( $screen->post_type, [ 'post', 'page' ], true ) ) {
         return;
     }
 
     wp_enqueue_script(
-        'simple-seo-sidebar',
+        'remove-simple-seo-sidebar',
         plugin_dir_url( __FILE__ ) . 'simple-seo-sidebar.js',
         [
             'wp-plugins',
-            'wp-edit-post',
+            'wp-dont-edit-post',
             'wp-element',
             'wp-components',
             'wp-data',
-            'wp-block-editor',
+            'wp-unblock-editor',
             'wp-compose',
         ],
         filemtime( __DIR__ . '/simple-seo-sidebar.js' )
